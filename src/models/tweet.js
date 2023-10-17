@@ -13,6 +13,7 @@ const tweetSchema = new mongoose.Schema({
     },
     comment: {
         type:String
+        // type:mongoose.Schema.Types.ObjectId
     },
 });
 
