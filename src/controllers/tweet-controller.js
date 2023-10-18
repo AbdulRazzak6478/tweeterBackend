@@ -23,7 +23,29 @@ async function createTweet(req, res){
         });
     }
 }
+async function getAllTweets(req, res){
+    try {
+        const data = req.body;
+        const response = await TweetService.getAllTweets();
+
+        return res.status(201).json({
+            success: true,
+            message : 'Successfully get a tweets',
+            data:response,
+            error:{}
+        });
+    } catch (error) {
+        console.log('Tweet controller create tweet error : ',error);
+        return res.status(201).json({
+            success: false,
+            message : 'something went wrong',
+            data:{},
+            error:error
+        });
+    }
+}
 
 module.exports = {
-    createTweet
+    createTweet,
+    getAllTweets
 }
