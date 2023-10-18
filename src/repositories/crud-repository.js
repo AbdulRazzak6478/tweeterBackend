@@ -16,7 +16,7 @@ class CrudRepository{
             throw error
         }
     }
-    async getAllTweets()
+    async getAll()
     {
         try {
             const response = await this.model.find({});
