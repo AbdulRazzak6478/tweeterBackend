@@ -7,6 +7,16 @@ class  LikeRepository extends CrudRepository{
     {
         super(Like);
     }
+    async findByUserAndLikeable(data)
+    {
+        try {
+            const like = Like.findOne(data);
+            return like;
+        } catch (error) {
+            console.log('like repo ',error);
+            throw error;
+        }
+    }
 }
 
 module.exports = LikeRepository;
