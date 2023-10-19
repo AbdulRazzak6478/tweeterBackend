@@ -12,7 +12,7 @@ const hashtagSchema = new mongoose.Schema({
             type:mongoose.Schema.Types.ObjectId
         }
     ]
-});
+}); 
 
 const Hashtag = mongoose.model('Hashtag',hashtagSchema);
 

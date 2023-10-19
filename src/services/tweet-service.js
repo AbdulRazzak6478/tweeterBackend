@@ -45,8 +45,19 @@ async function getAllTweets()
         throw error;
     }
 }
+async function getTweet(id)
+{
+    try {
+        const response = await tweetRepository.get(id);
+        return response;
+    } catch (error) {
+        console.log('tweet service get Tweet error',error);
+        throw error;
+    }
+}
 
 module.exports = {
     createTweet,
     getAllTweets,
+    getTweet
 }

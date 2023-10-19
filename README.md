@@ -17,6 +17,12 @@ atlasCloud mongo
  - `comment tweets`
  - `hashtags(#)`
 
+# Like
+ - `like on tweet, like on comment tweet`
+
+# Comment
+ - ` content`
+ - ` like`
 # User 
  - `userName`
  - `authentication`
