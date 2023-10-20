@@ -1,5 +1,7 @@
 const { UserRepository } = require('../repositories');
 const bcrypt = require('bcrypt')
+const jwt = require('jsonwebtoken')
+const { User } = require('../models')
 
 const userRepository = new UserRepository();
 
@@ -49,8 +51,15 @@ async function signIn(data)
         // }
         // user authenticated
         console.log('user successfully signIn');
-        console.log(user);
-        return user;
+        // const token = User.generateToken();
+        const input = {
+            id:user.id,
+            email : user.email
+        }
+        const token = generateToken(input);
+        console.log('token',token);
+        console.log('user details ',user);
+        return {user,token};
     } catch (error) {
         console.log('user service signup user error :',error);
         throw error;
@@ -66,6 +75,11 @@ function checkPassword(plainPassword, encryptedPassword){
         console.log('check password ',error);
         throw error;
     }
+}
+function generateToken(input){
+    return jwt.sign(input,'twitter_secret',{
+        expiresIn:'2h'
+    })
 }
 
 module.exports = {

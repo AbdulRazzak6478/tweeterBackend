@@ -4,11 +4,18 @@ const Tweet = require('./models/tweet');
 const Hashtag = require('./models/hashtag');
 const { TweetRepository } = require('./repositories');
 const apiRoutes = require('./routes')
+const passport = require('passport');
+const passportAuth = require('./middlewares/jwt-middlewares.js');
+
 
 const app = express();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+app.use(passport.initialize());
+// console.log('passport : ',passport);
+passportAuth(passport);
 
 app.use("/api", apiRoutes);
 

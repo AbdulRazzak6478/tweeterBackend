@@ -21,7 +21,7 @@ async function toggleLike(data)
      else{
         console.log('Wrong Model Type');
      }
-     console.log('request : ',data);
+   //   console.log('request : ',data);
      const exists = await likeRepository.findByUserAndLikeable({
         user:data.userId,
         onModel : data.modelType,

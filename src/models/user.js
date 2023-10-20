@@ -1,5 +1,7 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt')
+const jwt = require('jsonwebtoken');
+
 const userSchema = new mongoose.Schema({
     email:{
         type:String,
@@ -34,6 +36,15 @@ userSchema.methods.comparePassword = function compare(password)
     console.log('current password : ',password);
     const user = this;
     return bcrypt.compareSync(password, user.password);
+}
+userSchema.methods.generateToken = function generate()
+{
+    return jwt.sign({
+        id:this._id,
+        email:this.email
+    },'twitter_secret',{
+        expiresIn:'2h'
+    })
 }
 const User = mongoose.model('User',userSchema);
 

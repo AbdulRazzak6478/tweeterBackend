@@ -1,9 +1,12 @@
 
+const passportAuth = require('../middlewares/jwt-middlewares');
 const { LikeService  } = require('../services');
-
+const passport = require('passport')
 
 async function toggleLike(req, res){
     try {
+        // passportAuth(passport,req.body.userId);
+        // console.log('request object : ',req.authorization);
         const data = req.body;
         const response = await LikeService.toggleLike(data);
 
