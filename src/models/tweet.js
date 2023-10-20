@@ -20,6 +20,9 @@ const tweetSchema = new mongoose.Schema({
             ref:'Comment'
         }
     ],
+    // image:{
+    //     type:String,
+    // }
 });
 
 const Tweet = mongoose.model('Tweet',tweetSchema);
