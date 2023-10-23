@@ -1,6 +1,8 @@
 
 const { TweetService  } = require('../services');
 const upload = require("../config/file-upload-s3.js");
+const { StatusCodes } = require('http-status-codes');
+const { ErrorResponse, SuccessResponse } = require("../utils/common");
 
 async function createTweet(req, res){
     const singleUploader = upload.single('image')
@@ -23,21 +25,12 @@ async function createTweet(req, res){
         //     });
 
         // })
-
-        return res.status(201).json({
-            success: true,
-            message : 'Successfully created a tweet',
-            data:response,
-            error:{}
-        });
+        SuccessResponse.data = response;
+        return res.status(StatusCodes.OK).json(SuccessResponse);
     } catch (error) {
         console.log('Tweet controller create tweet error : ',error);
-        return res.status(201).json({
-            success: false,
-            message : 'something went wrong',
-            data:{},
-            error:error
-        });
+        ErrorResponse.data = error;
+        return res.status(error?.statusCode ? error.statusCode :StatusCodes.INTERNAL_SERVER_ERROR).json(ErrorResponse);
     }
 }
 async function getAllTweets(req, res){
@@ -45,20 +38,12 @@ async function getAllTweets(req, res){
         const data = req.body;
         const response = await TweetService.getAllTweets();
 
-        return res.status(201).json({
-            success: true,
-            message : 'Successfully get a tweets',
-            data:response,
-            error:{}
-        });
+        SuccessResponse.data = response;
+        return res.status(StatusCodes.OK).json(SuccessResponse);
     } catch (error) {
         console.log('Tweet controller get all tweet error : ',error);
-        return res.status(201).json({
-            success: false,
-            message : 'something went wrong',
-            data:{},
-            error:error
-        });
+        ErrorResponse.data = error;
+        return res.status(error?.statusCode ? error.statusCode :StatusCodes.INTERNAL_SERVER_ERROR).json(ErrorResponse);
     }
 }
 async function getTweet(req, res){
@@ -66,20 +51,12 @@ async function getTweet(req, res){
         const data = req.body;
         const response = await TweetService.getTweet(req.params.id);
 
-        return res.status(201).json({
-            success: true,
-            message : 'Successfully get a tweets',
-            data:response,
-            error:{}
-        });
+        SuccessResponse.data = response;
+        return res.status(StatusCodes.OK).json(SuccessResponse);
     } catch (error) {
         console.log('Tweet controller get tweet error : ',error);
-        return res.status(201).json({
-            success: false,
-            message : 'something went wrong',
-            data:{},
-            error:error
-        });
+        ErrorResponse.data = error;
+        return res.status(error?.statusCode ? error.statusCode :StatusCodes.INTERNAL_SERVER_ERROR).json(ErrorResponse);
     }
 }
 

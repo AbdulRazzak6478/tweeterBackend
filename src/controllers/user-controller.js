@@ -1,26 +1,18 @@
 
 const { UserService  } = require('../services');
-
+const { StatusCodes } = require('http-status-codes');
+const { ErrorResponse, SuccessResponse } = require("../utils/common");
 
 async function signup(req, res){
     try {
         const data = req.body;
         const response = await UserService.signup(data);
-
-        return res.status(201).json({
-            success: true,
-            message : 'Successfully created a tweet',
-            data:response,
-            error:{}
-        });
+        SuccessResponse.data = response;
+        return res.status(StatusCodes.CREATED).json(SuccessResponse);
     } catch (error) {
         console.log('Tweet controller create tweet error : ',error);
-        return res.status(500).json({
-            success: false,
-            message : 'something went wrong',
-            data:{},
-            error:error
-        });
+        ErrorResponse.data = error;
+        return res.status(error?.statusCode ? error.statusCode :StatusCodes.INTERNAL_SERVER_ERROR).json(ErrorResponse);
     }
 }
 async function signIn(req, res){
@@ -28,20 +20,12 @@ async function signIn(req, res){
         const data = req.body;
         const response = await UserService.signIn(data);
 
-        return res.status(201).json({
-            success: true,
-            message : 'Successfully user signIn',
-            data:response,
-            error:{}
-        });
+        SuccessResponse.data = response;
+        return res.status(StatusCodes.OK).json(SuccessResponse);
     } catch (error) {
         console.log('user controller create tweet error : ',error);
-        return res.status(500).json({
-            success: false,
-            message : 'something went wrong',
-            data:{},
-            error:error
-        });
+        ErrorResponse.data = error;
+        return res.status(error?.statusCode ? error.statusCode :StatusCodes.INTERNAL_SERVER_ERROR).json(ErrorResponse);
     }
 }
 

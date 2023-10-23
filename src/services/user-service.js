@@ -2,7 +2,9 @@ const { UserRepository } = require('../repositories');
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 const { User } = require('../models')
-
+const { StatusCodes } = require('http-status-codes');
+const AppError = require('../utils/errors/app-error');
+const { Auth } = require('../utils/common');
 const userRepository = new UserRepository();
 
 async function signup(data)
@@ -13,20 +15,9 @@ async function signup(data)
         return user;
     } catch (error) {
         console.log('user service signup user error :',error);
-        throw error;
+        throw new AppError(`Cannot SignUp the user , ${error?.message}`,error?.statusCode ? error.statusCode :StatusCodes.INTERNAL_SERVER_ERROR)
     }
 }
-// function checkPassword(plainPassword, encryptedPassword){
-//     try {
-//         // return bcrypt.compareSync(plainPassword, encryptedPassword);
-//         console.log('func called');
-//         console.log('passwords : ',plainPassword, encryptedPassword);
-//         return bcrypt.compareSync(plainPassword, encryptedPassword)
-//     } catch (error) {
-//         console.log('check password ',error);
-//         throw error;
-//     }
-// }
 async function signIn(data)
 {
     try {
@@ -39,7 +30,7 @@ async function signIn(data)
             throw { message : 'No user found'}
         }
         // compare password
-        if(!checkPassword(data.password,encryptedPassword))
+        if(!Auth.checkPassword(data.password,encryptedPassword))
         {
             throw { message : 'Incorrect Password'}
         }
@@ -56,13 +47,13 @@ async function signIn(data)
             id:user.id,
             email : user.email
         }
-        const token = generateToken(input);
+        const token = Auth.createToken(input);
         console.log('token',token);
         console.log('user details ',user);
         return {user,token};
     } catch (error) {
         console.log('user service signup user error :',error);
-        throw error;
+        throw new AppError(`Not able to signup the user , ${error?.message}`,error?.statusCode ? error.statusCode :StatusCodes.INTERNAL_SERVER_ERROR)
     } 
 }
 function checkPassword(plainPassword, encryptedPassword){

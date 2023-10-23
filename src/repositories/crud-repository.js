@@ -1,4 +1,5 @@
-
+const { StatusCodes } = require('http-status-codes');
+const AppError = require('../utils/errors/app-error');
 
 class CrudRepository{
  
@@ -20,22 +21,39 @@ class CrudRepository{
     async get(id)
     {
         const response = this.model.findById(id);
+        console.log("get response : ",response);
+        if(!response)
+        {
+            throw new AppError("Not able to found the resource",StatusCodes.NOT_FOUND)
+        }
         return response;
     }
 
     async deleteOne(id)
     {
         const response = this.model.deleteOne(id);
+        if(!response)
+        {
+            throw new AppError("Not able to found the resource",StatusCodes.NOT_FOUND)
+        }
         return response;
     }
     async delete(id)
     {
         const response = this.model.findByIdAndDelete(id);
+        if(!response)
+        {
+            throw new AppError("Not able to found the resource",StatusCodes.NOT_FOUND)
+        }
         return response;
     }
     async update(id,data)
     {
         const response = this.model.findByIdAndUpdate(id, data, {new : true});
+        if(!response[0])
+        {
+            throw new AppError('Not able to found the resource',StatusCodes.NOT_FOUND)
+        }
         return response;
     }
 }

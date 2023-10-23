@@ -1,5 +1,6 @@
 const { TweetRepository , HashtagRepository } = require('../repositories');
-
+const { StatusCodes } = require('http-status-codes');
+const AppError = require('../utils/errors/app-error');
 
 const tweetRepository = new TweetRepository();
 const hashtagRepository = new HashtagRepository();
@@ -31,7 +32,7 @@ async function createTweet(data)
         return tweet;
     } catch (error) {
         console.log('tweet service create tweet error :',error);
-        throw error;
+        throw new AppError(`Not able to create tweet , ${error?.message}`,error?.statusCode ? error.statusCode :StatusCodes.INTERNAL_SERVER_ERROR)
     }
 }
 
@@ -42,7 +43,7 @@ async function getAllTweets()
         return response;
     } catch (error) {
         console.log('tweet service get Tweets error',error);
-        throw error;
+        throw new AppError(`Not able to get all tweets , ${error?.message}`,error?.statusCode ? error.statusCode :StatusCodes.INTERNAL_SERVER_ERROR)
     }
 }
 async function getTweet(id)
@@ -52,7 +53,7 @@ async function getTweet(id)
         return response;
     } catch (error) {
         console.log('tweet service get Tweet error',error);
-        throw error;
+        throw new AppError(`Not able to get Tweet , ${error?.message}`,error?.statusCode ? error.statusCode :StatusCodes.INTERNAL_SERVER_ERROR)
     }
 }
 

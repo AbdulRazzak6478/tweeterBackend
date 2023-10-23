@@ -1,6 +1,7 @@
 const { User } = require("../models");
 const CrudRepository = require("./crud-repository");
-
+const { StatusCodes } = require('http-status-codes');
+const AppError = require('../utils/errors/app-error');
 
 class  UserRepository extends CrudRepository{
     constructor()
@@ -19,8 +20,11 @@ class  UserRepository extends CrudRepository{
         
         try {
             const user = await User.findOne(email);
-            return user;
-            
+            if(!user)
+            {
+                throw new AppError("Not able to found the resource",StatusCodes.NOT_FOUND)
+            }
+            return user; 
         } catch (error) {
             console.log('user repo error', error);
             throw error;

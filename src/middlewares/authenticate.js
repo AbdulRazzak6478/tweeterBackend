@@ -1,12 +1,15 @@
 const passport = require('passport');
 const jwt = require('jsonwebtoken');
+const { StatusCodes } = require('http-status-codes');
+const AppError = require('../utils/errors/app-error');
+const { ErrorResponse } = require('../utils/common');
 
 function verifyToken(token){
     try {
         return jwt.verify(token,'twitter_secret');
     } catch (error) {
         console.log('verifytoken error ',error.message,error.name);
-        throw error;
+        throw new AppError(`Invalid token , error in verifyToken`,StatusCodes.NOT_FOUND)
     }
 }
 
@@ -29,13 +32,15 @@ function authenticate(req, res, next){
           next();
         }
       } catch (error) {
-        return res.status(401).json({
-            message:'Unauthorize access ,and token',
-        })
+        // return res.status(401).json({
+        //     message:'Unauthorize access ,and token',
+        // })
+        ErrorResponse.data = error;
+        return res.status(error?.statusCode ? error.statusCode :StatusCodes.NOT_FOUND).json(ErrorResponse);
       }
     }
     else {
-         return res.status(401).json({
+         return res.status(error?.statusCode ? error.statusCode :StatusCodes.NOT_FOUND).json({
                     message:'Unauthorize access',
                 })
     }

@@ -1,6 +1,7 @@
 const { Hashtag } = require("../models");
 const CrudRepository = require("./crud-repository");
-
+const { StatusCodes } = require('http-status-codes');
+const AppError = require('../utils/errors/app-error');
 
 class  HashtagRepository extends CrudRepository{
     constructor()
@@ -14,7 +15,7 @@ class  HashtagRepository extends CrudRepository{
             return tags;
         } catch (error) {
             console.log('hashtag repo bulkCreate error : ',error);
-            throw error;
+            throw new AppError("Not able to create bulk create ",StatusCodes.NOT_FOUND)
         }
     }
     async getHashtagByName(tags){

@@ -1,5 +1,6 @@
 const { LikeRepository, TweetRepository , CommentRepository} = require('../repositories')
-
+const { StatusCodes } = require('http-status-codes');
+const AppError = require('../utils/errors/app-error');
 const likeRepository = new LikeRepository();
 const tweetRepository = new TweetRepository(); 
 const commentRepository = new CommentRepository(); 
@@ -19,7 +20,7 @@ async function toggleLike(data)
         likeable = await commentRepository.get(data.modelId);
      }
      else{
-        console.log('Wrong Model Type');
+      throw new AppError(`ModelType is different`,StatusCodes.NOT_FOUND)
      }
    //   console.log('request : ',data);
      const exists = await likeRepository.findByUserAndLikeable({
@@ -52,7 +53,7 @@ async function toggleLike(data)
      return isAdded;
    } catch (error) {
     console.log('like service error',error);
-    throw error;
+    throw new AppError(`Cannot make a like , ${error?.message}`,error?.statusCode ? error.statusCode :StatusCodes.INTERNAL_SERVER_ERROR)
    }
 }
 
