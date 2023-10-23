@@ -10,7 +10,11 @@ async function toggleLike(req, res){
         // passportAuth(passport,req.body.userId);
         // console.log('request object : ',req.authorization);
         const data = req.body;
-        const response = await LikeService.toggleLike(data);
+        const response = await LikeService.toggleLike({
+            user: req.body.userId,
+            onModel : req.body.onModel,
+            likeable : req.body.likeable
+        });
 
         SuccessResponse.data = response;
         return res.status(StatusCodes.CREATED).json(SuccessResponse);

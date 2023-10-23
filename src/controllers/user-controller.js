@@ -6,7 +6,13 @@ const { ErrorResponse, SuccessResponse } = require("../utils/common");
 async function signup(req, res){
     try {
         const data = req.body;
-        const response = await UserService.signup(data);
+        const response = await UserService.signup({
+            email:req.body.email,
+            password:req.body.password,
+            name:req.body.name,
+            bio:req.body.bio,
+            tweets:req.body.tweets,
+        });
         SuccessResponse.data = response;
         return res.status(StatusCodes.CREATED).json(SuccessResponse);
     } catch (error) {

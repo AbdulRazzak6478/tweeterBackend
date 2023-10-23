@@ -1,8 +1,5 @@
 const { Logger, ServerConfig, DB} = require('./config')
 const express = require('express');
-const Tweet = require('./models/tweet');
-const Hashtag = require('./models/hashtag');
-const { TweetRepository } = require('./repositories');
 const apiRoutes = require('./routes')
 const passport = require('passport');
 const passportAuth = require('./middlewares/jwt-middlewares.js');
