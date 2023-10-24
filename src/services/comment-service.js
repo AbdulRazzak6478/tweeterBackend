@@ -18,10 +18,10 @@ async function createComment(data)
         const tweetId = data.commentable;
         console.log('tweetId : ',tweetId);
         const tweet = await tweetRepository.get(tweetId);
-        console.log('before updating comment : ',tweet);
+        console.log('before updating comment in tweet : ',tweet);
         tweet.comments.push(comment.id);
         tweet.save();
-        console.log('after updating comment : ',tweet);
+        console.log('after updating comment in tweet : ',tweet);
 
         // storing the new hashtags ----
         const allPresentHashtags = await hashtagRepository.getHashtagByName(tags);
@@ -52,8 +52,29 @@ async function createComment(data)
     }
 }
 
-
+async function getAllComments()
+{
+    try {
+        const response = await commentRepository.getAll();
+        return response;
+    } catch (error) {
+        console.log('comment service get comments error',error);
+        throw new AppError(`Not able to get all comments `,StatusCodes.INTERNAL_SERVER_ERROR)
+    }
+}
+async function getComment(id)
+{
+    try {
+        const response = await commentRepository.get(id);
+        return response;
+    } catch (error) {
+        console.log('comment service get comment error',error);
+        throw new AppError(`Not able to get the comment `,StatusCodes.INTERNAL_SERVER_ERROR)
+    }
+}
 
 module.exports = {
-    createComment
+    createComment,
+    getAllComments,
+    getComment
 }
