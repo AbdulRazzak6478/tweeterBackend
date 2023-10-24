@@ -36,9 +36,10 @@ async function authenticate(req, res, next) {
         }
       } catch (error) {
         ErrorResponse.data = error;
-        return res
-          .status(StatusCodes.UNAUTHORIZED)
-          .json({ message: "User not authorized for this action" });
+        throw new AppError(
+          ["User is not authorized "],
+          StatusCodes.UNAUTHORIZED
+        );
       }
     } else {
       throw new AppError(

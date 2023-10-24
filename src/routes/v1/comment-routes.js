@@ -1,8 +1,8 @@
 const express = require('express');
-const {  } = require('../../controllers');
+const { CommentController } = require('../../controllers');
 const router = express.Router();
 
-router.get('/comments');
+router.post('/',CommentController.createComment);
 
 router.get('/info',(req,res)=>{
     return res.json({msg:'router is setup'});

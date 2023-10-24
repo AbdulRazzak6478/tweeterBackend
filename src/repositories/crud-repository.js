@@ -21,7 +21,7 @@ class CrudRepository{
     async get(id)
     {
         const response = this.model.findById(id);
-        console.log("get response : ",response);
+        // console.log("get response : ",response);
         if(!response)
         {
             throw new AppError("Not able to found the resource",StatusCodes.NOT_FOUND)

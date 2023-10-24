@@ -20,7 +20,7 @@ async function createTweet(data)
             return {
                 text : tag,
                 tweets : [tweet.id],
-            }
+            } 
         });
         const bulk = await hashtagRepository.bulkCreate(newTags);
 

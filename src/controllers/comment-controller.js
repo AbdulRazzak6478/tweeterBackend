@@ -1,0 +1,25 @@
+const { StatusCodes } = require('http-status-codes');
+const { ErrorResponse, SuccessResponse } = require("../utils/common");
+const { CommentService } = require('../services')
+
+async function createComment(req, res){
+    try {
+        const data = req.body;
+        const response = await CommentService.createComment({
+            content : req.body.content,
+            user : req.body.userId,
+            onModel : req.body.onModel,
+            commentable : req.body.commentable,
+        });
+
+        SuccessResponse.data = response;
+        return res.status(StatusCodes.OK).json(SuccessResponse);
+    } catch (error) {
+        console.log('Comment controller create comment error : ',error);
+        ErrorResponse.data = error;
+        return res.status(error?.statusCode ? error.statusCode :StatusCodes.INTERNAL_SERVER_ERROR).json(ErrorResponse);
+    }
+}
+module.exports = {
+    createComment
+}
