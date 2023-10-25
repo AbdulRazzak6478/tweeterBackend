@@ -73,7 +73,7 @@ async function getAllComments()
         return response;
     } catch (error) {
         console.log('comment service get comments error',error);
-        throw new AppError(`Not able to get all comments `,StatusCodes.INTERNAL_SERVER_ERROR)
+        throw new AppError(`Not able to get all comments, ${error?.message}`,error?.statusCode ? error.statusCode :StatusCodes.INTERNAL_SERVER_ERROR)
     }
 }
 async function getComment(id)
@@ -83,12 +83,23 @@ async function getComment(id)
         return response;
     } catch (error) {
         console.log('comment service get comment error',error);
-        throw new AppError(`Not able to get the comment `,StatusCodes.INTERNAL_SERVER_ERROR)
+        throw new AppError(`Not able to get the comment ,${error?.message}`,error?.statusCode ? error.statusCode :StatusCodes.INTERNAL_SERVER_ERROR)
+    }
+}
+async function deleteComment(id)
+{
+    try {
+        const response = await commentRepository.delete(id);
+        return response;
+    } catch (error) {
+        console.log('comment service delete comment error',error);
+        throw new AppError(`Not able to delete the comment ,${error?.message}`,error?.statusCode ? error.statusCode :StatusCodes.INTERNAL_SERVER_ERROR)
     }
 }
 
 module.exports = {
     createComment,
     getAllComments,
-    getComment
+    getComment,
+    deleteComment,
 }

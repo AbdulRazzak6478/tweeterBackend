@@ -56,9 +56,20 @@ async function getTweet(id)
         throw new AppError(`Not able to get Tweet , ${error?.message}`,error?.statusCode ? error.statusCode :StatusCodes.INTERNAL_SERVER_ERROR)
     }
 }
+async function deleteTweet(id)
+{
+    try {
+        const response = await tweetRepository.delete(id);
+        return response;
+    } catch (error) {
+        console.log('tweet service delete Tweet error',error);
+        throw new AppError(`Not able to delete Tweet , ${error?.message}`,error?.statusCode ? error.statusCode :StatusCodes.INTERNAL_SERVER_ERROR)
+    }
+}
 
 module.exports = {
     createTweet,
     getAllTweets,
-    getTweet
+    getTweet,
+    deleteTweet
 }

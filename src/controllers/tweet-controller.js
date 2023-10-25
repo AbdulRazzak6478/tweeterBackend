@@ -62,8 +62,23 @@ async function getTweet(req, res){
     }
 }
 
+async function deleteTweet(req, res){
+    try {
+        const data = req.body;
+        const response = await TweetService.deleteTweet(req.params.id);
+
+        SuccessResponse.data = response;
+        return res.status(StatusCodes.OK).json(SuccessResponse);
+    } catch (error) {
+        console.log('Tweet controller delete tweet error : ',error);
+        ErrorResponse.data = error;
+        return res.status(error?.statusCode ? error.statusCode :StatusCodes.INTERNAL_SERVER_ERROR).json(ErrorResponse);
+    }
+}
+
 module.exports = {
     createTweet,
     getAllTweets,
-    getTweet
+    getTweet,
+    deleteTweet
 }

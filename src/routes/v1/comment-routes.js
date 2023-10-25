@@ -11,6 +11,9 @@ router.get('/',CommentController.getAllComments);
 // post the comment /comments/:id GET get Comment 
 router.get('/:id',CommentController.getComment);
 
+// post the comment /comments/:id GET get Comment 
+router.delete('/:id',CommentController.deleteComment);
+
 router.get('/info',(req,res)=>{
     return res.json({msg:'router is setup'});
 })

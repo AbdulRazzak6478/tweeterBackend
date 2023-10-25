@@ -54,8 +54,22 @@ async function getComment(req, res){
         return res.status(error?.statusCode ? error.statusCode :StatusCodes.INTERNAL_SERVER_ERROR).json(ErrorResponse);
     }
 }
+async function deleteComment(req, res){
+    try {
+        const data = req.body;
+        const response = await CommentService.deleteComment(req.params.id);
+
+        SuccessResponse.data = response;
+        return res.status(StatusCodes.OK).json(SuccessResponse);
+    } catch (error) {
+        console.log('Comment controller get all comments error : ',error);
+        ErrorResponse.data = error;
+        return res.status(error?.statusCode ? error.statusCode :StatusCodes.INTERNAL_SERVER_ERROR).json(ErrorResponse);
+    }
+}
 module.exports = {
     createComment,
     getAllComments,
-    getComment
+    getComment,
+    deleteComment
 }
