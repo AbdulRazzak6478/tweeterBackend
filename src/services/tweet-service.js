@@ -1,4 +1,4 @@
-const { TweetRepository , HashtagRepository, CommentRepository, LikeRepository } = require('../repositories');
+const { TweetRepository , HashtagRepository, CommentRepository, LikeRepository, UserRepository } = require('../repositories');
 const { StatusCodes } = require('http-status-codes');
 const AppError = require('../utils/errors/app-error');
 
@@ -6,6 +6,7 @@ const tweetRepository = new TweetRepository();
 const hashtagRepository = new HashtagRepository();
 const commentRepository = new CommentRepository();
 const likeRepository = new LikeRepository();
+const userRepository = new UserRepository();
 
 async function createTweet(data)
 {
@@ -13,6 +14,12 @@ async function createTweet(data)
         const content = data.content;
         const tags = content.match(/#+[a-zA-Z0-9(_)]+/g).map(tag => tag.substring(1).toLowerCase());
         const tweet = await tweetRepository.create(data);
+
+        // saving tweet on user model
+        const user = data.userId;
+        const userDetails = await userRepository.get(user);
+        userDetails.tweets.push(tweet.id);
+        userDetails.save();
 
         // storing the new hashtags ----
         const allPresentHashtags = await hashtagRepository.getHashtagByName(tags);
@@ -63,37 +70,35 @@ async function deleteTweet(id)
     try {
         // deleted from the comments also
         const tweet = await tweetRepository.get(id);
-        console.log('tweet details : ',tweet);
 
         // deleting tweet
-        // const response = await tweetRepository.delete(id);
+        const response = await tweetRepository.delete(id);
+
+        // deleting tweet from user profile
+        const user = tweet.userId;
+        const userDetails = await userRepository.get(user);
+        userDetails.replies.pull(tweet.id);
+        userDetails.save();
         
-        console.log('all comments : ',tweet.comments);
-         // to delete likes
+        // to delete likes
         tweet?.likes.forEach(async (likeId)=>{
             const like = await LikeRepository.delete(likeId);
-            console.log('like deleted : ',like);
         })
         // to delete comments
         tweet?.comments.forEach(async(commentId)=>{
             const cmt = await commentRepository.delete(commentId);
-            console.log('comment deleted from comment model',cmt);
         });
 
         // deleting tweet from hashtags also
         const tags = tweet.content.match(/#+[a-zA-Z0-9(_)]+/g).map(tag => tag.substring(1).toLowerCase());
         const hashtags = await hashtagRepository.getHashtagByName(tags);
-        console.log('all hashtags : ',hashtags);
-        console.log('hashtags length : ',hashtags[0].tweets.length);
         hashtags.forEach((tag) => {
             tag.tweets.pull(tweet.id);
             tag.save();
         })
-        console.log('all hashtags :',hashtags[0]);
-        console.log('hashtags length : ',hashtags[0].tweets.length);
 
-        
         return response;
+        
     } catch (error) {
         console.log('tweet service delete Tweet error',error);
         throw new AppError(`Not able to delete Tweet , ${error?.message}`,error?.statusCode ? error.statusCode :StatusCodes.INTERNAL_SERVER_ERROR)

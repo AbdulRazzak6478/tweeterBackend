@@ -9,7 +9,6 @@ async function createTweet(req, res){
     try {
         // while creating no comments and likes would be there
         const data = req.body;
-        console.log('tweet data : ',req.body);
         const response = await TweetService.createTweet(data);
         // singleUploader(req,res,async function(err,data){
         //     if(err){

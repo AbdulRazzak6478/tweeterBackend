@@ -1,10 +1,11 @@
 
 
-const { CommentRepository, HashtagRepository, TweetRepository} = require('../repositories')
+const { CommentRepository, HashtagRepository, TweetRepository, UserRepository} = require('../repositories')
 
 const hashtagRepository = new HashtagRepository();
 const commentRepository = new CommentRepository();
 const tweetRepository = new TweetRepository();
+const userRepository = new UserRepository();
 
 async function createComment(data)
 {
@@ -12,35 +13,33 @@ async function createComment(data)
         const content = data.content;
         const tags = content.match(/#+[a-zA-Z0-9(_)]+/g).map(tag => tag.substring(1).toLowerCase());
         const comment = await commentRepository.create(data);
-        console.log('Comment created : ',comment);
+
+        // saving comment on user model
+        const user = data.userId;
+        const userDetails = await userRepository.get(user);
+        userDetails.replies.push(comment.id);
+        userDetails.save();
 
         if(data.onModel === 'Tweet')
         {
             // storing the comment Id in tweet model 
             const tweetId = data.commentable;
-            console.log('tweetId : ',tweetId);
             const tweet = await tweetRepository.get(tweetId);
-            console.log('before updating comment in tweet : ',tweet);
             tweet.comments.push(comment.id);
             tweet.save();
-            console.log('after updating comment in tweet : ',tweet);
         }
         else if(data.onModel === 'Comment'){
             // storing the comment Id in comment model 
             const commentId = data.commentable;
-            console.log('comment id : ',commentId);
             const existComment = await commentRepository.get(commentId);
-            console.log('exist comment details : ',existComment);
             existComment.commentable.push(comment.id);
             existComment.save();
-            console.log('after updating comment in comment : ',existComment);
         }
         
 
         // storing the new hashtags ----
         const allPresentHashtags = await hashtagRepository.getHashtagByName(tags);
         let textOfPresentTags = allPresentHashtags.map(tags => tags.text);
-        console.log('all present tags : ',textOfPresentTags);
 
 
         let newTags = tags.filter(tag => !textOfPresentTags.includes(tag));
@@ -51,7 +50,6 @@ async function createComment(data)
                 tweets : [comment.id], 
             } 
         });
-        console.log('new tags',newTags);
         const bulk = await hashtagRepository.bulkCreate(newTags);
 
         // storing tweet in all ready present hashtags
@@ -90,37 +88,34 @@ async function deleteComment(id)
 {
     try { 
         const comment = await commentRepository.get(id);
-        console.log('comment details :',comment); 
 
         // delete comment
         const response = await commentRepository.delete(id);
 
+        // deleting comment from user profile
+        const user = comment.userId;
+        const userDetails = await userRepository.get(user);
+        userDetails.replies.pull(comment.id);
+        userDetails.save();
+
         // deleting comment id from tweet
         const tweet = await tweetRepository.get(comment.commentable);
-        console.log('tweet details : ',tweet);
         tweet.comments.pull(comment.id);
         tweet.save()
         const updateTweet = await tweetRepository.update(tweet["_id"],tweet)
-        console.log('tweet comment delete ', updateTweet);
 
         // delete comment comments
         comment.commentable.forEach(async (cmt)=>{
             const deleted = await commentRepository.delete(cmt);
-            console.log('deleted comment : ',deleted);
         })
-        
         
         // delete hashtags
         const tags = comment.content.match(/#+[a-zA-Z0-9(_)]+/g).map(tag => tag.substring(1).toLowerCase());
         const hashtags = await hashtagRepository.getHashtagByName(tags);
-        console.log('all hashtags : ',hashtags);
-        console.log('hashtags length : ',hashtags[0].tweets.length);
         hashtags.forEach((tag) => {
             tag.tweets.pull(comment.id);
             tag.save();
         })
-        console.log('all hashtags :',hashtags[0]);
-        console.log('hashtags length : ',hashtags[0].tweets.length);
 
         return response;
     } catch (error) {
