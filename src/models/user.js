@@ -22,6 +22,16 @@ const userSchema = new mongoose.Schema({
             type:mongoose.Schema.Types.ObjectId,
         }
     ],
+    likes:[
+        {
+            type:mongoose.Schema.Types.ObjectId,
+        }
+    ],
+    replies:[
+        {
+            type:mongoose.Schema.Types.ObjectId,
+        }
+    ],
 });
 userSchema.pre('save',function(next){
     const user = this;

@@ -88,8 +88,40 @@ async function getComment(id)
 }
 async function deleteComment(id)
 {
-    try {
+    try { 
+        const comment = await commentRepository.get(id);
+        console.log('comment details :',comment); 
+
+        // delete comment
         const response = await commentRepository.delete(id);
+
+        // deleting comment id from tweet
+        const tweet = await tweetRepository.get(comment.commentable);
+        console.log('tweet details : ',tweet);
+        tweet.comments.pull(comment.id);
+        tweet.save()
+        const updateTweet = await tweetRepository.update(tweet["_id"],tweet)
+        console.log('tweet comment delete ', updateTweet);
+
+        // delete comment comments
+        comment.commentable.forEach(async (cmt)=>{
+            const deleted = await commentRepository.delete(cmt);
+            console.log('deleted comment : ',deleted);
+        })
+        
+        
+        // delete hashtags
+        const tags = comment.content.match(/#+[a-zA-Z0-9(_)]+/g).map(tag => tag.substring(1).toLowerCase());
+        const hashtags = await hashtagRepository.getHashtagByName(tags);
+        console.log('all hashtags : ',hashtags);
+        console.log('hashtags length : ',hashtags[0].tweets.length);
+        hashtags.forEach((tag) => {
+            tag.tweets.pull(comment.id);
+            tag.save();
+        })
+        console.log('all hashtags :',hashtags[0]);
+        console.log('hashtags length : ',hashtags[0].tweets.length);
+
         return response;
     } catch (error) {
         console.log('comment service delete comment error',error);

@@ -11,12 +11,11 @@ async function signup(req, res){
             password:req.body.password,
             name:req.body.name,
             bio:req.body.bio,
-            tweets:req.body.tweets,
         });
         SuccessResponse.data = response;
         return res.status(StatusCodes.CREATED).json(SuccessResponse);
     } catch (error) {
-        console.log('Tweet controller create tweet error : ',error);
+        console.log('user controller signup user error : ',error);
         ErrorResponse.data = error;
         return res.status(error?.statusCode ? error.statusCode :StatusCodes.INTERNAL_SERVER_ERROR).json(ErrorResponse);
     }
@@ -29,7 +28,7 @@ async function signIn(req, res){
         SuccessResponse.data = response;
         return res.status(StatusCodes.OK).json(SuccessResponse);
     } catch (error) {
-        console.log('user controller create tweet error : ',error);
+        console.log('user controller create signin user error : ',error);
         ErrorResponse.data = error;
         return res.status(error?.statusCode ? error.statusCode :StatusCodes.INTERNAL_SERVER_ERROR).json(ErrorResponse);
     }
