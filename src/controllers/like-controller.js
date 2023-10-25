@@ -11,9 +11,9 @@ async function toggleLike(req, res){
         // console.log('request object : ',req.authorization);
         const data = req.body;
         const response = await LikeService.toggleLike({
-            user: req.body.userId,
-            onModel : req.body.onModel,
-            likeable : req.body.likeable
+            userId: req.body.userId,
+            modelType : req.body.modelType,
+            modelId : req.body.modelId
         });
 
         SuccessResponse.data = response;

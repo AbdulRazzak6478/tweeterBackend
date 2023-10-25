@@ -11,7 +11,7 @@ const commentRoutes = require('./comment-routes');
 router.use('/comments',commentRoutes);
 router.use('/tweets',tweetRoutes);
 router.use('/user',userRoutes);
-router.use('/likes/toggle',authenticate,LikeController.toggleLike);
+router.use('/likes/toggle',LikeController.toggleLike);
 
 router.get('/info',info) 
 
