@@ -47,3 +47,19 @@ atlasCloud mongo
 # Search By Hashtags
 # comment tweets, threading tweets 
 
+# Project setup
+- `clone this project`
+- `create .env file and setup { port number, URI of mongo db, secretKey, ExpiresTime }`
+
+- ` open terminal and type > npm run dev`
+
+# able to signup
+# able to signin
+# able to createTweet
+# able to create comment on Tweet
+# able to create comment on comment
+# tweets and comments also store in hashtags model by a objectId
+# updating user profile like : tweets,likes,replies when user create tweet,comment or make a like
+# user able to delete a tweet and comment which would also update in user profile
+# user able to like or unlike a tweet and comment
+
