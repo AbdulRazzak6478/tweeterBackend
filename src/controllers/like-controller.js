@@ -7,8 +7,6 @@ const { ErrorResponse, SuccessResponse } = require("../utils/common");
 
 async function toggleLike(req, res){
     try {
-        // passportAuth(passport,req.body.userId);
-        // console.log('request object : ',req.authorization);
         const data = req.body;
         const response = await LikeService.toggleLike({
             userId: req.body.userId,

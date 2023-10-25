@@ -5,6 +5,7 @@ const { User } = require('../models')
 const { StatusCodes } = require('http-status-codes');
 const AppError = require('../utils/errors/app-error');
 const { Auth } = require('../utils/common');
+const { ServerConfig } = require('../config');
 const userRepository = new UserRepository();
 
 async function signup(data)
@@ -69,6 +70,7 @@ function checkPassword(plainPassword, encryptedPassword){
 }
 function generateToken(input){
     return jwt.sign(input,'twitter_secret',{
+        algorithm: "HS256",
         expiresIn:'2h'
     })
 }
@@ -78,9 +80,12 @@ async function isAuthenticated(token)
     try {
         if(!token)
         {
-            throw new AppError('x-access-token : bearer-token ,missing jwt token',StatusCodes.BAD_REQUEST);
+            throw new AppError('bearer-token :jwt-token, missing jwt-token',StatusCodes.BAD_REQUEST);
         }
         const response = Auth.verifyToken(token);
+        // const response = generateToken(token);
+        // const response = jwt.verify(token,ServerConfig.JWT_SECRET);
+        console.log('token decoded : ',response);
         const user = await userRepository.get(response.id);
         if(!user)
         {

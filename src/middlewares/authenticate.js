@@ -1,10 +1,11 @@
 const passport = require("passport");
-const jwt = require("jsonwebtoken");
 const { StatusCodes } = require("http-status-codes");
 const AppError = require("../utils/errors/app-error");
 const { ErrorResponse } = require("../utils/common");
 const { ServerConfig } = require("../config");
 const { UserService } = require("../services");
+const jwt = require("jsonwebtoken");
+// const jwt = require("jsonwebtoken");
 
 function verifyToken(token) {
   try {
@@ -19,36 +20,34 @@ function verifyToken(token) {
 }
 async function authenticate(req, res, next) {
   try {
-    // const headers = req.headers['bearerToken']
     console.log("req headers", req.headers);
     const bearerHeader = req.headers['bearer-token'];
-    // const bearerHeader = req.headers["authorization"];
-    console.log("bearer token ", bearerHeader);
+    console.log("bearer token ", bearerHeader,typeof bearerHeader);
+    // const result = verifyToken(bearerHeader);
+    // console.log('token decoded');
+    // return res.status(201).json({message : 'token is not decoded',result})
+    if(!bearerHeader)
+    {
+      return res.status(401).json({message : 'bearer-token is missing'})
+    }
     if (typeof bearerHeader !== "undefined") {
-      const bearer = bearerHeader.split(" ");
-      const bearerToken = bearer[1];
-      try {
+      // const bearer = bearerHeader.split(" ");
+      // const bearerToken = bearer[1];
+      const bearerToken = bearerHeader;
         const response = await UserService.isAuthenticated(bearerToken);
         if (response) {
           console.log("user authenticated", response);
           req.user = response;
           next();
         }
-      } catch (error) {
-        ErrorResponse.data = error;
-        throw new AppError(
-          ["User is not authorized "],
-          StatusCodes.UNAUTHORIZED
-        );
-      }
     } else {
       throw new AppError(
-        ["Bearer-token or authorization  , jwt token is missing"],
+        ["Bearer-token : jwt token is missing"],
         StatusCodes.BAD_REQUEST
       );
     }
   } catch (error) {
-    ErrorResponse.data = error;
+    ErrorResponse.error = error;
     return res
       .status(error?.statusCode ? error.statusCode : StatusCodes.NOT_FOUND)
       .json(ErrorResponse);

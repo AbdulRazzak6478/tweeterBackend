@@ -1,8 +1,9 @@
 const express = require('express');
 const { TweetController } = require('../../controllers');
+const { TweetMiddlewares, isAuthenticate } = require('../../middlewares');
 const router = express.Router();
 
-router.post('/',TweetController.createTweet);
+router.post('/',TweetMiddlewares.validateCreateRequest,TweetController.createTweet);
 
 router.get('/',TweetController.getAllTweets);
 

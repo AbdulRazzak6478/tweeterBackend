@@ -7,11 +7,12 @@ const { info } = require('../../controllers/info-controller');
 const tweetRoutes = require('./tweet-routes');
 const userRoutes = require('./user-routes');
 const commentRoutes = require('./comment-routes');
+const { LikeMiddlewares, isAuthenticate } = require('../../middlewares');
 
 router.use('/comments',commentRoutes);
 router.use('/tweets',tweetRoutes);
 router.use('/user',userRoutes);
-router.use('/likes/toggle',LikeController.toggleLike);
+router.post('/likes/toggle',LikeMiddlewares.validateLikeRequest,LikeController.toggleLike);
 
 router.get('/info',info) 
 

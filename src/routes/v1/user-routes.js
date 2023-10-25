@@ -1,9 +1,10 @@
 const express = require('express');
 const { UserController } = require('../../controllers');
+const { UserMiddlewares } = require('../../middlewares');
 const router = express.Router();
 
-router.post('/signup',UserController.signup);
-router.post('/signin',UserController.signIn);
+router.post('/signup',UserMiddlewares.validateSignUpRequest,UserController.signup);
+router.post('/signin',UserMiddlewares.validateSignInRequest,UserController.signIn);
 
 
 router.get('/info',(req,res)=>{
