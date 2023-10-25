@@ -6,7 +6,7 @@ const commentSchema = new mongoose.Schema({
         type:String,
         required : true,
     },
-    user:{
+    userId:{
         type:mongoose.Schema.Types.ObjectId
     },
     onModel : {
@@ -14,11 +14,13 @@ const commentSchema = new mongoose.Schema({
         required : true,
         enum : ['Tweet','Comment'],
     },
-    commentable : {
-        type : mongoose.Types.ObjectId,
-        required : true,
-        refPath : 'onModel'
-    }
+    commentable : [
+        {
+            type : mongoose.Types.ObjectId,
+            required : true,
+            refPath : 'onModel'
+        }
+    ]
 });
 
 const Comment = mongoose.model('Comment',commentSchema);

@@ -7,14 +7,10 @@ const { ErrorResponse, SuccessResponse } = require("../utils/common");
 async function createTweet(req, res){
     const singleUploader = upload.single('image')
     try {
+        // while creating no comments and likes would be there
         const data = req.body;
-        // const response = await TweetService.createTweet(data);
-        const response = await TweetService.createTweet({
-            content: req.body.content,
-            likes:req.body.likes,
-            noOfRetweets : req.body.noOfRetweets,
-            comments:req.body.comments
-        });
+        console.log('tweet data : ',req.body);
+        const response = await TweetService.createTweet(data);
         // singleUploader(req,res,async function(err,data){
         //     if(err){
         //         console.log(err)

@@ -5,6 +5,9 @@ const tweetSchema = new mongoose.Schema({
     content:{
         type:String
     },
+    userId:{
+        type:mongoose.Schema.Types.ObjectId
+    },
     likes:[
         {
             type:mongoose.Schema.Types.ObjectId,

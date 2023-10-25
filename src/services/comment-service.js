@@ -14,14 +14,28 @@ async function createComment(data)
         const comment = await commentRepository.create(data);
         console.log('Comment created : ',comment);
 
-        // storing the comment Id in tweet model 
-        const tweetId = data.commentable;
-        console.log('tweetId : ',tweetId);
-        const tweet = await tweetRepository.get(tweetId);
-        console.log('before updating comment in tweet : ',tweet);
-        tweet.comments.push(comment.id);
-        tweet.save();
-        console.log('after updating comment in tweet : ',tweet);
+        if(data.onModel === 'Tweet')
+        {
+            // storing the comment Id in tweet model 
+            const tweetId = data.commentable;
+            console.log('tweetId : ',tweetId);
+            const tweet = await tweetRepository.get(tweetId);
+            console.log('before updating comment in tweet : ',tweet);
+            tweet.comments.push(comment.id);
+            tweet.save();
+            console.log('after updating comment in tweet : ',tweet);
+        }
+        else if(data.onModel === 'Comment'){
+            // storing the comment Id in comment model 
+            const commentId = data.commentable;
+            console.log('comment id : ',commentId);
+            const existComment = await commentRepository.get(commentId);
+            console.log('exist comment details : ',existComment);
+            existComment.commentable.push(comment.id);
+            existComment.save();
+            console.log('after updating comment in comment : ',existComment);
+        }
+        
 
         // storing the new hashtags ----
         const allPresentHashtags = await hashtagRepository.getHashtagByName(tags);

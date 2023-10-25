@@ -5,6 +5,13 @@ const { CommentService } = require('../services')
 async function createComment(req, res){
     try {
         const data = req.body;
+        console.log("body : ",req.body);
+        // const comments = [];
+        // comments.push(req.body.commentable);
+        // console.log('comments array ',comments, typeof comments);
+        // req.body.commentable = comments;
+        // console.log('comments : ',req.body);
+        // return res.status(StatusCodes.OK).json(SuccessResponse);
         const response = await CommentService.createComment({
             content : req.body.content,
             user : req.body.userId,
