@@ -12,7 +12,7 @@ const { LikeMiddlewares, isAuthenticate } = require('../../middlewares');
 router.use('/comments',commentRoutes);
 router.use('/tweets',tweetRoutes);
 router.use('/user',userRoutes);
-router.post('/likes/toggle',LikeMiddlewares.validateLikeRequest,LikeController.toggleLike);
+router.post('/likes/toggle',isAuthenticate,LikeMiddlewares.validateLikeRequest,LikeController.toggleLike);
 
 router.get('/info',info) 
 

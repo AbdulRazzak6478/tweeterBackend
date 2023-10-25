@@ -20,12 +20,7 @@ function verifyToken(token) {
 }
 async function authenticate(req, res, next) {
   try {
-    console.log("req headers", req.headers);
     const bearerHeader = req.headers['bearer-token'];
-    console.log("bearer token ", bearerHeader,typeof bearerHeader);
-    // const result = verifyToken(bearerHeader);
-    // console.log('token decoded');
-    // return res.status(201).json({message : 'token is not decoded',result})
     if(!bearerHeader)
     {
       return res.status(401).json({message : 'bearer-token is missing'})

@@ -42,15 +42,12 @@ async function signIn(data)
         //     throw { message : 'Incorrect Password'}
         // }
         // user authenticated
-        console.log('user successfully signIn');
         // const token = User.generateToken();
         const input = {
-            id:user.id,
-            email : user.email
+            id : user[0].id,
+            email : user[0].email
         }
         const token = Auth.createToken(input);
-        console.log('token',token);
-        console.log('user details ',user);
         return {user,token};
     } catch (error) {
         console.log('user service signup user error :',error);
