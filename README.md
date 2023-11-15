@@ -76,18 +76,35 @@ SignUP `/api/v1/user/signup`
 ```
 API's 
 
-SignUp `/api/v1/user/signup` POST, request body
+SignUp `http://localhost:3000/api/v1/user/signup` POST, request body
 ```
   email:req.body.email,
   password:req.body.password,
   name:req.body.name,
   bio:req.body.bio,
 ```
-SignIn  `api/v1/user/signin` POST, request body
+SignIn  `http://localhost:3000/api/v1/user/signin` POST, request body
 ```
   email:req.body.email,
   password:req.body.password,
   
+```
+
+# Tweet api's
+create tweet  `http://localhost:3000/api/v1/tweets/` POST, request body
+```
+  content:req.body.content,
+  userId:req.body.userId,
+```
+getAllTweets  `http://localhost:3000/api/v1/tweets/` GET
+
+getTweet `http://localhost:3000/api/v1/tweets/:id` GET
+```
+  id:req.params.id
+```
+delete Tweet `http://localhost:3000/api/v1/tweets/:id` Delete
+```
+  id:req.params.id
 ```
 
 
