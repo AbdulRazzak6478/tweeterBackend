@@ -107,5 +107,27 @@ delete Tweet `http://localhost:3000/api/v1/tweets/:id` Delete
   id:req.params.id
 ```
 
+# Comment api's
+
+create comment on Tweet or Comment itself `http://localhost:3000/api/v1/comments/` POST, request body
+```
+  content : req.body.content,
+  userId : req.body.userId,
+  onModel : req.body.onModel,
+  commentable : req.body.commentable,
+```
+getAllComments  `http://localhost:3000/api/v1/comments/` GET 
+
+getComment `http://localhost:3000/api/v1/comments/:id` , GET
+```
+  id:req.params.id
+``` 
+
+delete comment `http://localhost:3000/api/v1/comments/:id` , DELETE
+```
+  id:req.params.id
+```
+
+
 
 
