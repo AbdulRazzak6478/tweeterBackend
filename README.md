@@ -75,6 +75,7 @@ SignUP `/api/v1/user/signup`
 
 ```
 API's 
+complete user authentication is implemented
 
 SignUp `http://localhost:3000/api/v1/user/signup` POST, request body
 ```
@@ -89,6 +90,7 @@ SignIn  `http://localhost:3000/api/v1/user/signin` POST, request body
   password:req.body.password,
   
 ```
+when user signin jwt_token send to the user if user is successfully signin
 
 # Tweet api's
 create tweet  `http://localhost:3000/api/v1/tweets/` POST, request body
@@ -132,6 +134,18 @@ delete comment `http://localhost:3000/api/v1/comments/:id` , DELETE
 When we create tweet or comment if there are hashtags in it then those hash tags gets stored in it with there corresponding tweet or comment id's.
 
 - you can implement a api to get hashtags.
+
+
+# How to use like api
+like a tweet or comment , `http://localhost:3000/api/v1//likes/toggle` , POST request body
+```
+  userId: req.body.userId,
+  modelType : req.body.modelType,
+  modelId : req.body.modelId
+```
+- to make like and unlike on tweet or comments
+
+All the comments , tweets,likes that user created that are also stored in user profile .
 
 
 
