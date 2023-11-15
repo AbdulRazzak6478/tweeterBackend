@@ -128,6 +128,12 @@ delete comment `http://localhost:3000/api/v1/comments/:id` , DELETE
   id:req.params.id
 ```
 
+# HashTags
+When we create tweet or comment if there are hashtags in it then those hash tags gets stored in it with there corresponding tweet or comment id's.
+
+- you can implement a api to get hashtags.
+
+
 
 
 
