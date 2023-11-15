@@ -9,7 +9,7 @@ atlasCloud mongo
 
   issue that user a JWT token
 
-  /signIN
+SignUP `/api/v1/user/signup`
   /createTweet - content,image,TOKEN  --create service
   //
 
@@ -62,4 +62,33 @@ atlasCloud mongo
 # updating user profile like : tweets,likes,replies when user create tweet,comment or make a like
 # user able to delete a tweet and comment which would also update in user profile
 # user able to like or unlike a tweet and comment
+
+
+# How to use this project apis
+
+- create `.env` file in your root directory and add below environment configuration
+```
+  PORT = <PORT_number>
+  UR_INDENTIFIER = <mongoDB_atlas_cloud_db_identifier_link>
+  JWT_SECRET = 'secret_key'
+  JWT_EXPIRY = 'expire_time'
+
+```
+API's 
+
+SignUp `/api/v1/user/signup` POST, request body
+```
+  email:req.body.email,
+  password:req.body.password,
+  name:req.body.name,
+  bio:req.body.bio,
+```
+SignIn  `api/v1/user/signin` POST, request body
+```
+  email:req.body.email,
+  password:req.body.password,
+  
+```
+
+
 

@@ -50,7 +50,7 @@ async function signIn(data)
         const token = Auth.createToken(input);
         return {user,token};
     } catch (error) {
-        console.log('user service signup user error :',error);
+        console.log('user service signin user error :',error);
         throw new AppError(`Not able to signup the user , ${error?.message}`,error?.statusCode ? error.statusCode :StatusCodes.INTERNAL_SERVER_ERROR)
     } 
 }

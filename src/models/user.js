@@ -39,7 +39,7 @@ userSchema.pre('save',function(next){
     const encryptedPassword = bcrypt.hashSync(user.password, saltRounds);
     user.password = encryptedPassword;
     next();
-})
+});
 
 userSchema.methods.comparePassword = function compare(password)
 {
