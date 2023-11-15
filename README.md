@@ -40,12 +40,15 @@ SignUP `/api/v1/user/signup`
  - `word`
  - `List of tweets`
  - `rankings`
-Other users should be able to like a tweet
-Other users should be able to comment a tweet
-Other users should be able to retweet a tweet
-Other users should be able to visit a profile or author and follow
-Search By Hashtags
-comment tweets, threading tweets 
+
+
+# functionalities
+- Other users should be able to like a tweet
+- Other users should be able to comment a tweet
+- Other users should be able to retweet a tweet
+- Other users should be able to visit a profile or author and follow
+- Search By Hashtags
+- comment tweets, threading tweets 
 
 # Project setup
 - `clone this project`
@@ -53,15 +56,16 @@ comment tweets, threading tweets
 
 - ` open terminal and type > npm run dev`
 
-able to signup
-able to signin
-able to createTweet
-able to create comment on Tweet
-able to create comment on comment
-tweets and comments also store in hashtags model by a objectId
-updating user profile like : tweets,likes,replies when user create tweet,comment or make a like
-user able to delete a tweet and comment which would also update in user profile
-user able to like or unlike a tweet and comment
+# Features 
+- able to signup
+- able to signin
+- able to createTweet
+- able to create comment on Tweet
+- able to create comment on comment
+- tweets and comments also store in hashtags model by a objectId
+- updating user profile like : tweets,likes,replies when user create tweet,comment or make a like
+- user able to delete a tweet and comment which would also update in user profile
+- user able to like or unlike a tweet and comment
 
 
 # How to use this project apis
