@@ -1,31 +1,13 @@
 
 const { TweetService  } = require('../services');
-const upload = require("../config/file-upload-s3.js");
 const { StatusCodes } = require('http-status-codes');
 const { ErrorResponse, SuccessResponse } = require("../utils/common");
 
 async function createTweet(req, res){
-    const singleUploader = upload.single('image')
     try {
         // while creating no comments and likes would be there
         const data = req.body;
         const response = await TweetService.createTweet(data);
-        // singleUploader(req,res,async function(err,data){
-        //     if(err){
-        //         console.log(err)
-        //     }
-        //     console.log(req.file);
-        //     const payload = {...req.body};
-        //     payload.image = req.file.location;
-        //     const response = await tweetService.create(payload);
-        //     return res.status(201).json({
-        //         success:true,
-        //         message:"Successfully created a tweet",
-        //         data: response,
-        //         err:{}
-        //     });
-
-        // })
         SuccessResponse.data = response;
         return res.status(StatusCodes.OK).json(SuccessResponse);
     } catch (error) {

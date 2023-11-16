@@ -1,6 +1,6 @@
-const { Logger, ServerConfig, DB } = require("./config");
+const { Logger, ServerConfig, DB } = require("./config/index.js");
 const express = require("express");
-const apiRoutes = require("./routes");
+const apiRoutes = require("./routes/index.js");
 const passport = require("passport");
 const passportAuth = require("./middlewares/jwt-middlewares.js");
 
